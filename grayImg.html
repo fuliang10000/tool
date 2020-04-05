@@ -2,19 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>灰色头像</title>
 </head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .gray_img {
+        width: 400px;
+        height: 400px;
+        border: #D6D6D6 1px solid;
+    }
+    .select-img {
+        width: 100%;
+        margin-top: 10px;
+        text-align: center;
+    }
+    .select-img .select {
+        border: 1px #C9C5C5 solid;
+        bottom: 0;
+        left: 0;
+        z-index: 100;
+        width: 30%;
+        height: 30px;
+        line-height: 30px;
+        font-size: 18px;
+    }
+    .content-desc {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 30px;
+    }
+</style>
 <body>
 <form method="post" enctype="multipart/form-data">
-    <input type="file" name="file"><br/>
-    <input class="submit" type="button" value="上传"/><br/>
-    <img class="gray_img" src=""/>
+    <div class="content-desc">
+        <span>变灰头像处理工具</span>
+    </div>
+    <div style="padding: 20px;text-align: center;">
+        <img class="gray_img" src="./uploads/default.jpeg"/>
+        <p style="padding: 5px;">长按保存</p>
+    </div>
+    <div class="select-img">
+        <input class="select" type="file" name="file">
+    </div>
 </form>
 </body>
 <script type="text/javascript" src="./js/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
-    $('.submit').on('click', function () {
-        var file = $('input[name=file]')[0].files[0];
+    $('input[name=file]').on('change', function () {
+        var file = $(this)[0].files[0];
         if (file == undefined) {
             alert('请先选择图片');
             return false;
@@ -41,18 +79,5 @@
             }
         });
     });
-    // 长按下载
-    // $('.gray_img').on('longtap', function () {
-    //     var imgUrl = $(this).attr('src');
-    //     var blob = new Blob([''], {type: 'application/octet-stream'});
-    //     var url = URL.createObjectURL(blob);
-    //     var a = document.createElement('a');
-    //     a.href = imgUrl;
-    //     a.download = imgUrl.replace(/(.*\/)*([^.]+.*)/ig, "$2").split("?")[0];
-    //     var e = document.createEvent('MouseEvents');
-    //     e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    //     a.dispatchEvent(e);
-    //     URL.revokeObjectURL(url);
-    // });
 </script>
 </html>
