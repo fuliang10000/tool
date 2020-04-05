@@ -12,12 +12,12 @@ body {
     z-index: 302;
     bottom: 0;
     left: 0;
-    height: 40px;
+    height: 100px;
     overflow: hidden;
     color: #999;
     zoom: 1;
     background-color: #fafafa;
     text-align: center;
-    line-height: 40px;
-    font-size: 20px;
+    line-height: 100px;
+    font-size: 50px;
 }
