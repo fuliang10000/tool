@@ -29,7 +29,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 ?>
 <form method="post">
     第一个数：<input type="text" name="num1"/><br/>
-    操作符：<select name="func" style="width: 50px">
+    &emsp;操作符：<select name="func" style="width: 50px">
         <option value="+"> + </option>
         <option value="-"> - </option>
         <option value="*"> * </option>
