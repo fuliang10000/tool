@@ -2,7 +2,7 @@
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     require_once './uploadFile.php';
     $file = $_FILES['file'];
-    file_put_contents("./debug.txt", date('Y/m/d H:i:s', time()) . " \t输出结果:" . var_export($file, true) . "\r\n\r\n", FILE_APPEND);
+//    file_put_contents("./debug.txt", date('Y/m/d H:i:s', time()) . " \t输出结果:" . var_export($file, true) . "\r\n\r\n", FILE_APPEND);
     $response = ['error' => 0, 'message' => '操作成功'];
     try {
 
@@ -12,15 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         // 保存图片
         $result = uploadFile($file);
-        file_put_contents("./debug.txt", date('Y/m/d H:i:s', time()) . " \t输出结果:" . var_export($result, true) . "\r\n\r\n", FILE_APPEND);
-
         if ($result['success'] == false) {
             throw new \Exception($result['message']);
         }
 
         $grayPath = grayImg($result['file_info']['file_path'], $result['file_info']['file_type']);
-        file_put_contents("./debug.txt", date('Y/m/d H:i:s', time()) . " \t输出结果:" . var_export($grayPath, true) . "\r\n\r\n", FILE_APPEND);
-
         if (!$grayPath) throw new \Exception('生成图片失败');
 
         $response['file_path'] = 'http://yimuyuan.xin/tool/' . $grayPath;
