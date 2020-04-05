@@ -3,7 +3,7 @@
  * 使用系统全局变量：$_FILES 实现上传文件到指定的目录
  * @param array $cert 系统全局变量：$_FILES['myFile']（必要参数）
  * @param int $maxSize 最大上传文件大小，单位：MB，默认：5MB
- * @param string $savePath 指定文件保存的路径，默认：'./uploads/年月日/'
+ * @param string|null $savePath 指定文件保存的路径，默认：'./uploads/年月日/'
  * @example
  * $cert = $_FILES['file'];
  * $savePath = './uploads/';
@@ -20,7 +20,7 @@
  * @author fuliang
  * @date 2018-04-03
  */
-function uploadFile (array $cert, int $maxSize = 5, string $savePath = './uploads/'): array
+function uploadFile (array $cert, int $maxSize = 5, ?string $savePath = null): array
 {
 
     try {
