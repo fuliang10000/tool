@@ -24,9 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             throw new \Exception($result['message']);
         }
 
-        $imgType = 'jpeg';
-        if ($file['type'] == 'image/png') $imgType = 'png';
-        grayImg($result['file_info']['file_path'], $imgType);
+        grayImg($result['file_info']['file_path'], $result['file_info']['file_type']);
 
     } catch (\Exception $ex) {
 

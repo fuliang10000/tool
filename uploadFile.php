@@ -4,6 +4,7 @@
  * @param array $cert 系统全局变量：$_FILES['myFile']（必要参数）
  * @param int $maxSize 最大上传文件大小，单位：MB，默认：5MB
  * @param string|null $savePath 指定文件保存的路径，默认：'./uploads/年月日/'
+ * @param string|null $fileName 指定文件保存的名称
  * @example
  * $cert = $_FILES['file'];
  * $savePath = './uploads/';
@@ -13,14 +14,14 @@
  *       "message": "UPLOAD SUCCESS!",
  *       "file_info": [
  *           "file_path": "./updates/0_0_1228_6193#326_1.jpg",
- *           "file_type": "image/jpeg",
+ *           "file_type": "jpeg",
  *           "file_size": "0.37MB"
  *       ]
  * ]
  * @author fuliang
  * @date 2018-04-03
  */
-function uploadFile (array $cert, int $maxSize = 5, ?string $savePath = null): array
+function uploadFile (array $cert, int $maxSize = 5, ?string $savePath = null, ?string $fileName = null): array
 {
 
     try {
@@ -44,9 +45,9 @@ function uploadFile (array $cert, int $maxSize = 5, ?string $savePath = null): a
         }
 
         $url      = $cert['tmp_name'];
-        $name     = $cert['name'];                           //文件名
         $fileSize = round($cert['size']/1024/1024, 2) .'MB'; //文件大小
-        $fileType = $cert['type'];                           // 文件类型
+        $fileType = substr($cert['type'], strripos($cert['type'], "/") + 1);; // 文件类型
+        $name     = $fileName ? $fileName : rand(10000000, 99999999) . '.' . $fileType; //文件名
 
         /*设置上传路径，默认保存到uploads文件夹下的当前日期目录下*/
         if (empty($savePath)) {
