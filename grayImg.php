@@ -2,9 +2,9 @@
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     require_once './uploadFile.php';
     $file = $_FILES['file'];
-
+    $response = ['error' => 0, 'message' => '操作成功'];
     try {
-        
+
         if ($file['error'] > 0) {
             throw new \Exception('上传失败');
         }
@@ -24,13 +24,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             throw new \Exception($result['message']);
         }
 
-        grayImg($result['file_info']['file_path'], $result['file_info']['file_type']);
+        $grayPath = grayImg($result['file_info']['file_path'], $result['file_info']['file_type']);
+        if (!$grayPath) throw new \Exception('生成图片失败');
+
+        $response['file_path'] = 'http://localhost/tool/' . $grayPath;
 
     } catch (\Exception $ex) {
-
-        echo $ex->getMessage();
+        $response = ['error' => 100, 'message' => $ex->getMessage()];
     }
 
+    echo json_encode($response);
 }
 function grayImg($resImg, $imgType = 'jpeg')
 {
@@ -53,11 +56,9 @@ function grayImg($resImg, $imgType = 'jpeg')
             imagesetpixel($image, $x, $y, ImageColorAllocate($image, $gray, $gray, $gray));
         }
     }
-    imagejpeg($image);
+    $grayPath = substr($resImg, 0, strripos($resImg, "/") + 1) . 'gray_' . basename($resImg); // 文件路径
+    imagejpeg($image, $grayPath);
     imagedestroy($image);
+
+    return $grayPath;
 }
-?>
-<form method="post" enctype="multipart/form-data">
-    <input type="file" name="file"><br/>
-    <input type="submit" value="上传"/>
-</form>

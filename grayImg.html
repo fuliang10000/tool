@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="file"><br/>
+    <input class="submit" type="button" value="上传"/><br/>
+    <img class="gray_img" src=""/>
+</form>
+</body>
+<script type="text/javascript" src="./js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    $('.submit').on('click', function () {
+        var file = $('input[name=file]')[0].files[0];
+        if (file == undefined) {
+            alert('请先选择图片');
+            return false;
+        }
+        //创建表单对象，并加入文件对象
+        var formFile = new FormData();
+        formFile.append("file", file); //加入文件对象
+
+        //设置ajax参数为表单对象
+        $.ajax({
+            type: "post",
+            url: "./grayImg.php",
+            dataType: "json",
+            data: formFile,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.error == 0) {
+                    $('.gray_img').attr('src', data.file_path);
+                } else {
+                    alert(data.message);
+                }
+            }
+        });
+    });
+    // 长按下载
+    $('.gray_img').on('longtap', function () {
+        var imgUrl = $(this).attr('src');
+        var blob = new Blob([''], {type: 'application/octet-stream'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = imgUrl;
+        a.download = imgUrl.replace(/(.*\/)*([^.]+.*)/ig, "$2").split("?")[0];
+        var e = document.createEvent('MouseEvents');
+        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        a.dispatchEvent(e);
+        URL.revokeObjectURL(url);
+    });
+</script>
+</html>
