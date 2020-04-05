@@ -1,32 +1,47 @@
 <?php
 // 文件下载，支持断点续传
-$url  = 'http://ceshi-admin.sharcom.cn//uploads/member_files/order/2017/12/08/2cf4d497f9bd061b49d5c57857e11333.pdf';
-downloadFileHttp($url, 'new.pdf', 'D:/phpStudy/WWW/sdfds/333/');
+$params = $_GET;
+try {
+
+    if (empty($params['file_url'])) throw new \Exception('请传入文件地址！');
+    $fileUrl = $params['file_url'];
+    $fileName = $params['file_name'] ?? null;
+    $filePath = $params['file_path'] ?? null;
+    $chunkSize = $params['chunk_size'] ?? null;
+
+    downloadFileHttp($fileUrl, $fileName, $filePath, $chunkSize);
+
+} catch (\Exception $ex) {
+
+    echo $ex->getMessage();
+}
+
 /**
  * 远程文件下载，支持断点续传
  * @param string $url 远程文件地址（必要参数）
- * @param string $fileName 下载完成后的文件名 （可选参数：默认源文件名）
- * @param string $filePath 下载完成后的文件路径 （可选参数：默认当前文件目录下）
- * @param string $chunkSize 每次写入的大小,单位byte （可选参数：默认1M）
+ * @param string|null $fileName 下载完成后的文件名 （可选参数：默认源文件名）
+ * @param string|null $filePath 下载完成后的文件路径 （可选参数：默认当前文件目录下）
+ * @param int|null $chunkSize 每次写入的大小,单位byte （可选参数：默认1M）
  * @example
  * $url = "http://ceshi-admin.sharcom.cn//uploads/member_files/order/2017/12/08/2cf4d497f9bd061b49d5c57857e11333.pdf";
  * $fileName = "1514518158.pdf";
  * $filePath = "uploads/member_files/order/20171229/";
  * $chunkSize = "1024 * 2048";
- * @return array
- * 	[
- *		"success": true,
- *		"data": [
- * 				"file_size" => 11914920,
- * 				"file_name" => "1514518158.pdf",
- * 				"file_path" => "uploads/member_files/order/20171229/",
- * 			],
- *		"message": "下载成功！"
- *  ]
+ * @return json
+ * 	{
+ *      "success":true,
+ *      "data":{
+ *          "file_size":23149,
+ *          "file_name":"77aba2f582515fadfb346241700bc843_thumb.jpg",
+ *          "file_path":"C:/Users/fulia/Desktop"
+ *      },
+ *      "message":"下载成功！"
+ * }
  * @author fuliang
  * @date 2017-12-29
  */
-function downloadFileHttp ($url, $fileName = '', $filePath = '', $chunkSize = '') {
+function downloadFileHttp (string $url, ?string $fileName = null, ?string $filePath = null, ?int $chunkSize = null)
+{
     header('Content-Type: text/html; charset=utf-8');
     $response = ['success' => false , 'data' => [], 'message' => '下载失败！'];
     // 默认下载到当前目录下,如果指定了目录则下载到指定目录下,指定目录不存在则创建
@@ -87,7 +102,7 @@ function downloadFileHttp ($url, $fileName = '', $filePath = '', $chunkSize = ''
         while (!feof($fp)) {
             $buffer = fread($fp, $chunkSize);
             fwrite($fp2, $buffer); // 写入数据
-            ob_flush();
+            @ob_flush();
             flush();
         }
         fclose($fp);
