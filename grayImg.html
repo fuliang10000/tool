@@ -10,8 +10,8 @@
         padding: 0;
     }
     .gray_img {
-        width: 400px;
-        height: 400px;
+        max-width: 80%;
+        height: 600px;
         border: #D6D6D6 1px solid;
     }
     .select-img {
@@ -24,25 +24,25 @@
         bottom: 0;
         left: 0;
         z-index: 100;
-        width: 30%;
-        height: 30px;
-        line-height: 30px;
-        font-size: 18px;
+        width: 50%;
+        height: 60px;
+        line-height: 60px;
+        font-size: 40px;
     }
     .content-desc {
         text-align: center;
         margin-top: 50px;
-        font-size: 30px;
+        font-size: 40px;
     }
 </style>
 <body>
 <form method="post" enctype="multipart/form-data">
     <div class="content-desc">
-        <span>变灰头像处理工具</span>
+        <span>头像变灰处理工具</span>
     </div>
-    <div style="padding: 20px;text-align: center;">
+    <div style="padding: 30px;text-align: center;">
         <img class="gray_img" src="./uploads/default.jpeg"/>
-        <p style="padding: 5px;">长按图片保存</p>
+        <p style="padding-top: 10px;font-size: 30px;">长按图片保存</p>
     </div>
     <div class="select-img">
         <input class="select" type="file" name="file">
