@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if (!$grayPath) throw new \Exception('生成图片失败');
 
         $response['file_path'] = 'http://yimuyuan.xin/tool/' . $grayPath;
+//        $response['file_path'] = 'http://localhost/tool/' . $grayPath;
 
     } catch (\Exception $ex) {
         $response = ['error' => 100, 'message' => $ex->getMessage()];
