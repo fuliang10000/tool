@@ -47,6 +47,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小工具</title>
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+</head>
+<body>
 <form method="post">
     请输入要转换的数：<input type="text" name="num"/>
     <select name="change">
@@ -67,3 +75,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <input type="submit" value="转换"/>
     <input type="text" value="<?php echo @$result;?>"/>
 </form>
+<p class="beian-bottom">蜀ICP备19004669号-1</p>
+</body>
+</html>

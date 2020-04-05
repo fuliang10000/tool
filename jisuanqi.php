@@ -27,6 +27,14 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     $result = counter($num1,$func,$num2);
 };
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小工具</title>
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+</head>
+<body>
 <form method="post">
     第一个数：<input type="text" name="num1"/><br/>
     &emsp;操作符：<select name="func" style="width: 50px">
@@ -38,3 +46,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     第一个数：<input type="text" name="num2"/><br/>
     <input type="submit" value="计算"/>结果为：<?php echo @$result;?>
 </form>
+<p class="beian-bottom">蜀ICP备19004669号-1</p>
+</body>
+</html>

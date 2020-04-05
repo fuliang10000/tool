@@ -1,0 +1,23 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #D6D6D6;
+}
+.beian-bottom {
+    width: 100%;
+    position: fixed;
+    z-index: 302;
+    bottom: 0;
+    left: 0;
+    height: 40px;
+    overflow: hidden;
+    color: #999;
+    zoom: 1;
+    background-color: #fafafa;
+    text-align: center;
+    line-height: 40px;
+    font-size: 20px;
+}
