@@ -1,22 +1,28 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    require_once './uploadFile.php';
+    $response = ['error' => 0, 'message' => '上传成功'];
     $file = $_FILES['file'];
-//    file_put_contents("./debug.txt", date('Y/m/d H:i:s', time()) . " \t输出结果:" . var_export($file, true) . "\r\n\r\n", FILE_APPEND);
-    $response = ['error' => 0, 'message' => '操作成功'];
     try {
+
+        /*验证是否上传成功*/
+        if ($file['error'] > 0) {
+            throw new \Exception('上传失败');
+        }
+
+        if (!is_uploaded_file($file['tmp_name'])) {
+            throw new \Exception('上传文件错误');
+        }
+
+        if ($file['size'] > (1024 * 1024 * 5)) {
+            throw new \Exception("上传大小不能大于5MB");
+        }
 
         if (!in_array($file['type'], ["image/jpeg", "image/png"])) {
             throw new \Exception('只允许上传jpg、jpeg、png格式的图片');
         }
 
-        // 保存图片
-        $result = uploadFile($file);
-        if ($result['success'] == false) {
-            throw new \Exception($result['message']);
-        }
-
-        $grayPath = grayImg($result['file_info']['file_path'], $result['file_info']['file_type']);
+        $imgType = substr($file['type'], strripos($file['type'], "/") + 1);
+        $grayPath = grayImg($file['tmp_name'], $imgType);
         if (!$grayPath) throw new \Exception('生成图片失败');
 
         $response['file_path'] = 'http://yimuyuan.xin/tool/' . $grayPath;
@@ -49,8 +55,12 @@ function grayImg($resImg, $imgType = 'jpeg')
             imagesetpixel($image, $x, $y, ImageColorAllocate($image, $gray, $gray, $gray));
         }
     }
-    $grayPath = substr($resImg, 0, strripos($resImg, "/") + 1) . 'gray_' . basename($resImg); // 文件路径
-    imagejpeg($image, $grayPath);
+    $fileName = 'gray_' . time() . rand(1000, 9999) . '.' . $imgType;
+    $grayPath = './uploads/' . date('Ymd') . '/';
+    if (!is_dir($grayPath)) {
+        mkdir($grayPath, 0777, true);
+    }
+    imagejpeg($image, $grayPath . $fileName);
     imagedestroy($image);
 
     return $grayPath;

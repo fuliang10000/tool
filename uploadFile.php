@@ -46,7 +46,7 @@ function uploadFile (array $cert, int $maxSize = 5, ?string $savePath = null, ?s
 
         $url      = $cert['tmp_name'];
         $fileSize = round($cert['size']/1024/1024, 2) .'MB'; //文件大小
-        $fileType = substr($cert['type'], strripos($cert['type'], "/") + 1);; // 文件类型
+        $fileType = substr($cert['type'], strripos($cert['type'], "/") + 1); // 文件类型
         $name     = $fileName ? $fileName : rand(10000000, 99999999) . '.' . $fileType; //文件名
 
         /*设置上传路径，默认保存到uploads文件夹下的当前日期目录下*/
