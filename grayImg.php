@@ -1,4 +1,5 @@
 <?php
+header('Content-Type:application/json; charset=utf-8');
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $response = ['error' => 0, 'message' => '上传成功'];
     $file = $_FILES['file'];
@@ -25,8 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $grayPath = grayImg($file['tmp_name'], $imgType);
         if (!$grayPath) throw new \Exception('生成图片失败');
 
-        $response['file_path'] = 'http://yimuyuan.xin/tool/' . $grayPath;
-//        $response['file_path'] = 'http://localhost/tool/' . $grayPath;
+        $response['file_path'] = $grayPath;
 
     } catch (\Exception $ex) {
         $response = ['error' => 100, 'message' => $ex->getMessage()];
@@ -38,12 +38,12 @@ function grayImg($resImg, $imgType = 'jpeg')
 {
     switch ($imgType) {
         case 'png':
-            header('Content-Type: image/png');
             $image = imagecreatefrompng($resImg);
+            $func = 'imagejpeg';
             break;
         default:
-            header('Content-Type: image/jpeg');
             $image = imagecreatefromjpeg($resImg);
+            $func = 'imagepng';
             break;
 
     }
@@ -60,7 +60,8 @@ function grayImg($resImg, $imgType = 'jpeg')
     if (!is_dir($grayPath)) {
         mkdir($grayPath, 0777, true);
     }
-    imagejpeg($image, $grayPath . $fileName);
+    $grayPath .= $fileName;
+    $func($image, $grayPath);
     imagedestroy($image);
 
     return $grayPath;
